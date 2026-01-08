@@ -1,0 +1,1176 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clínica Serenidade | Estética Avançada & Bem-Estar</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <style>
+        :root {
+            --primary: #9DBF9E;
+            --secondary: #D4B483;
+            --accent: #C97C5D;
+            --light: #F7F3E3;
+            --dark: #3A506B;
+        }
+        
+        * {
+            transition: all 0.3s ease;
+        }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--light);
+            color: #333;
+            overflow-x: hidden;
+        }
+        
+        .heading-font {
+            font-family: 'Playfair Display', serif;
+        }
+        
+        .hero-section {
+            background: linear-gradient(135deg, rgba(247, 243, 227, 0.95) 0%, rgba(157, 191, 158, 0.1) 100%), url('https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+        
+        .nav-blur {
+            backdrop-filter: blur(10px);
+            background-color: rgba(247, 243, 227, 0.9);
+        }
+        
+        .card-hover {
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(58, 80, 107, 0.1);
+        }
+        
+        .treatment-card {
+            border-radius: 20px;
+            overflow: hidden;
+            background: white;
+            position: relative;
+        }
+        
+        .treatment-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+        }
+        
+        .gradient-text {
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .appointment-form input, 
+        .appointment-form select, 
+        .appointment-form textarea {
+            border-bottom: 2px solid #ddd;
+            border-radius: 0;
+            padding-left: 0;
+            padding-right: 0;
+            background: transparent;
+        }
+        
+        .appointment-form input:focus, 
+        .appointment-form select:focus, 
+        .appointment-form textarea:focus {
+            border-bottom-color: var(--primary);
+            box-shadow: none;
+        }
+        
+        .floating-button {
+            box-shadow: 0 10px 30px rgba(157, 191, 158, 0.4);
+        }
+        
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+        
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .calendar-day {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            cursor: pointer;
+            margin: 5px;
+        }
+        
+        .calendar-day:hover:not(.disabled):not(.selected) {
+            background-color: rgba(157, 191, 158, 0.2);
+        }
+        
+        .calendar-day.selected {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .calendar-day.disabled {
+            color: #ccc;
+            cursor: not-allowed;
+        }
+        
+        .time-slot {
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            margin: 5px;
+        }
+        
+        .time-slot:hover:not(.booked) {
+            border-color: var(--primary);
+            background-color: rgba(157, 191, 158, 0.1);
+        }
+        
+        .time-slot.selected {
+            background-color: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        .time-slot.booked {
+            background-color: #f5f5f5;
+            color: #aaa;
+            cursor: not-allowed;
+        }
+        
+        .mobile-menu {
+            transform: translateX(100%);
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .mobile-menu.open {
+            transform: translateX(0);
+        }
+        
+        .scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            z-index: 1000;
+            transition: width 0.2s ease;
+        }
+        
+        @media (max-width: 768px) {
+            .hero-section {
+                background-attachment: scroll;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Barra de progresso de rolagem -->
+    <div class="scroll-progress" id="scroll-progress"></div>
+    
+    <!-- Botão flutuante WhatsApp -->
+    <a href="https://wa.me/5511999999999" target="_blank" class="fixed bottom-6 right-6 z-40 bg-green-500 text-white w-16 h-16 rounded-full flex items-center justify-center floating-button animate__animated animate__pulse animate__infinite">
+        <i class="fab fa-whatsapp text-2xl"></i>
+    </a>
+    
+    <!-- Header e Navegação -->
+    <header class="fixed w-full z-30 nav-blur shadow-sm">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center">
+                    <div class="w-10 h-10 bg-gradient-to-r from-primary to-secondary rounded-full flex items-center justify-center mr-3">
+                        <i class="fas fa-spa text-white"></i>
+                    </div>
+                    <div>
+                        <h1 class="heading-font text-2xl font-bold text-dark">Serenidade</h1>
+                        <p class="text-xs text-gray-500">Clínica de Estética</p>
+                    </div>
+                </div>
+                
+                <!-- Navegação Desktop -->
+                <nav class="hidden lg:block">
+                    <ul class="flex space-x-10">
+                        <li><a href="#inicio" class="text-dark hover:text-primary font-medium text-sm uppercase tracking-wider">Início</a></li>
+                        <li><a href="#tratamentos" class="text-dark hover:text-primary font-medium text-sm uppercase tracking-wider">Tratamentos</a></li>
+                        <li><a href="#equipe" class="text-dark hover:text-primary font-medium text-sm uppercase tracking-wider">Equipe</a></li>
+                        <li><a href="#agendamento" class="text-dark hover:text-primary font-medium text-sm uppercase tracking-wider">Agendar</a></li>
+                        <li><a href="#contato" class="text-dark hover:text-primary font-medium text-sm uppercase tracking-wider">Contato</a></li>
+                    </ul>
+                </nav>
+                
+                <!-- Botão Mobile Menu -->
+                <button class="lg:hidden text-dark text-2xl" id="menu-toggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+    
+    <!-- Menu Mobile Overlay -->
+    <div class="mobile-menu fixed inset-0 z-40 bg-light lg:hidden" id="mobile-menu">
+        <div class="flex justify-end p-6">
+            <button class="text-3xl text-dark" id="menu-close">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="flex flex-col items-center justify-center h-4/5">
+            <ul class="space-y-10 text-center">
+                <li><a href="#inicio" class="text-2xl font-medium text-dark hover:text-primary block py-2">Início</a></li>
+                <li><a href="#tratamentos" class="text-2xl font-medium text-dark hover:text-primary block py-2">Tratamentos</a></li>
+                <li><a href="#equipe" class="text-2xl font-medium text-dark hover:text-primary block py-2">Equipe</a></li>
+                <li><a href="#agendamento" class="text-2xl font-medium text-dark hover:text-primary block py-2">Agendar</a></li>
+                <li><a href="#contato" class="text-2xl font-medium text-dark hover:text-primary block py-2">Contato</a></li>
+            </ul>
+            
+            <div class="mt-16 flex space-x-6">
+                <a href="#" class="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center">
+                    <i class="fab fa-instagram text-dark"></i>
+                </a>
+                <a href="#" class="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center">
+                    <i class="fab fa-facebook-f text-dark"></i>
+                </a>
+                <a href="#" class="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center">
+                    <i class="fab fa-tiktok text-dark"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Seção Hero -->
+    <section id="inicio" class="hero-section pt-32 pb-20 lg:pt-40 lg:pb-32">
+        <div class="container mx-auto px-4">
+            <div class="max-w-3xl fade-in">
+                <h2 class="heading-font text-4xl md:text-5xl lg:text-6xl font-bold text-dark mb-6 leading-tight">Cuidando da sua <span class="gradient-text">beleza natural</span> com serenidade</h2>
+                <p class="text-lg md:text-xl text-gray-600 mb-10">Na Clínica Serenidade, combinamos técnicas avançadas de estética com um ambiente tranquilo para oferecer a melhor experiência em cuidados com a pele e bem-estar.</p>
+                <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-6">
+                    <a href="#agendamento" class="bg-gradient-to-r from-primary to-secondary text-white font-medium py-4 px-10 rounded-full text-center shadow-lg hover:shadow-xl transform hover:-translate-y-1">Agendar Consulta</a>
+                    <a href="#tratamentos" class="bg-transparent border-2 border-primary text-primary font-medium py-4 px-10 rounded-full text-center hover:bg-primary hover:text-white">Ver Tratamentos</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Seção Diferenciais -->
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16 fade-in">
+                <h2 class="heading-font text-3xl md:text-4xl font-bold text-dark mb-4">Por que escolher a <span class="gradient-text">Clínica Serenidade</span>?</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">Nossa abordagem única combina expertise técnica com um ambiente cuidadosamente projetado para seu relaxamento e bem-estar.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="text-center card-hover p-8 rounded-2xl">
+                    <div class="w-20 h-20 bg-gradient-to-r from-primary to-secondary rounded-full flex items-center justify-center mx-auto mb-6">
+                        <i class="fas fa-user-md text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-dark mb-4">Especialistas Certificados</h3>
+                    <p class="text-gray-600">Nossa equipe é formada por profissionais com especializações e treinamentos constantes nas últimas técnicas.</p>
+                </div>
+                
+                <div class="text-center card-hover p-8 rounded-2xl">
+                    <div class="w-20 h-20 bg-gradient-to-r from-primary to-secondary rounded-full flex items-center justify-center mx-auto mb-6">
+                        <i class="fas fa-heartbeat text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-dark mb-4">Tecnologia de Ponta</h3>
+                    <p class="text-gray-600">Utilizamos equipamentos modernos e seguros, garantindo resultados eficazes e tratamentos confortáveis.</p>
+                </div>
+                
+                <div class="text-center card-hover p-8 rounded-2xl">
+                    <div class="w-20 h-20 bg-gradient-to-r from-primary to-secondary rounded-full flex items-center justify-center mx-auto mb-6">
+                        <i class="fas fa-leaf text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-dark mb-4">Produtos Naturais</h3>
+                    <p class="text-gray-600">Priorizamos produtos de alta qualidade, com ingredientes naturais e cruelty-free sempre que possível.</p>
+                </div>
+                
+                <div class="text-center card-hover p-8 rounded-2xl">
+                    <div class="w-20 h-20 bg-gradient-to-r from-primary to-secondary rounded-full flex items-center justify-center mx-auto mb-6">
+                        <i class="fas fa-spa text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-dark mb-4">Ambiente Relaxante</h3>
+                    <p class="text-gray-600">Projetamos cada detalhe do espaço para proporcionar uma experiência de relaxamento e rejuvenescimento.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Seção Tratamentos -->
+    <section id="tratamentos" class="py-20 bg-light">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16 fade-in">
+                <h2 class="heading-font text-3xl md:text-4xl font-bold text-dark mb-4">Nossos <span class="gradient-text">Tratamentos</span></h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">Oferecemos uma ampla gama de tratamentos estéticos personalizados para atender às suas necessidades específicas.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Tratamento 1 -->
+                <div class="treatment-card card-hover">
+                    <div class="p-8">
+                        <div class="flex justify-between items-start mb-6">
+                            <div>
+                                <h3 class="text-2xl font-bold text-dark mb-2">Limpeza de Pele Profunda</h3>
+                                <div class="flex items-center">
+                                    <i class="fas fa-clock text-primary mr-2"></i>
+                                    <span class="text-gray-500">60 minutos</span>
+                                </div>
+                            </div>
+                            <div class="text-2xl font-bold text-primary">R$ 180</div>
+                        </div>
+                        <p class="text-gray-600 mb-8">Remoção de impurezas, cravos e miliuns, seguida de hidratação profunda para uma pele revitalizada.</p>
+                        <div class="mb-6">
+                            <h4 class="font-medium text-dark mb-3">Benefícios:</h4>
+                            <ul class="space-y-2">
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-primary mt-1 mr-3"></i>
+                                    <span class="text-gray-600">Redução de poros dilatados</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-primary mt-1 mr-3"></i>
+                                    <span class="text-gray-600">Prevenção de acne</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-primary mt-1 mr-3"></i>
+                                    <span class="text-gray-600">Pele mais uniforme e iluminada</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <button class="w-full border-2 border-primary text-primary font-medium py-3 rounded-lg hover:bg-primary hover:text-white schedule-btn" data-treatment="Limpeza de Pele Profunda" data-price="180">Agendar Este Tratamento</button>
+                    </div>
+                </div>
+                
+                <!-- Tratamento 2 -->
+                <div class="treatment-card card-hover">
+                    <div class="p-8">
+                        <div class="flex justify-between items-start mb-6">
+                            <div>
+                                <h3 class="text-2xl font-bold text-dark mb-2">Preenchimento Facial</h3>
+                                <div class="flex items-center">
+                                    <i class="fas fa-clock text-primary mr-2"></i>
+                                    <span class="text-gray-500">90 minutos</span>
+                                </div>
+                            </div>
+                            <div class="text-2xl font-bold text-primary">R$ 850</div>
+                        </div>
+                        <p class="text-gray-600 mb-8">Correção de sulcos, rugas e volume facial com ácido hialurônico de alta qualidade para um resultado natural.</p>
+                        <div class="mb-6">
+                            <h4 class="font-medium text-dark mb-3">Benefícios:</h4>
+                            <ul class="space-y-2">
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-primary mt-1 mr-3"></i>
+                                    <span class="text-gray-600">Preenchimento de rugas e sulcos</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-primary mt-1 mr-3"></i>
+                                    <span class="text-gray-600">Restauração de volume facial</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-primary mt-1 mr-3"></i>
+                                    <span class="text-gray-600">Resultado natural e harmonioso</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <button class="w-full border-2 border-primary text-primary font-medium py-3 rounded-lg hover:bg-primary hover:text-white schedule-btn" data-treatment="Preenchimento Facial" data-price="850">Agendar Este Tratamento</button>
+                    </div>
+                </div>
+                
+                <!-- Tratamento 3 -->
+                <div class="treatment-card card-hover">
+                    <div class="p-8">
+                        <div class="flex justify-between items-start mb-6">
+                            <div>
+                                <h3 class="text-2xl font-bold text-dark mb-2">Toxina Botulínica</h3>
+                                <div class="flex items-center">
+                                    <i class="fas fa-clock text-primary mr-2"></i>
+                                    <span class="text-gray-500">45 minutos</span>
+                                </div>
+                            </div>
+                            <div class="text-2xl font-bold text-primary">R$ 700</div>
+                        </div>
+                        <p class="text-gray-600 mb-8">Suavização de rugas dinâmicas (pés de galinha, testa e glabela) para um aspecto rejuvenescido.</p>
+                        <div class="mb-6">
+                            <h4 class="font-medium text-dark mb-3">Benefícios:</h4>
+                            <ul class="space-y-2">
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-primary mt=1 mr-3"></i>
+                                    <span class="text-gray-600">Redução de rugas de expressão</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-primary mt-1 mr-3"></i>
+                                    <span class="text-gray-600">Prevenção de novas rugas</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-primary mt-1 mr-3"></i>
+                                    <span class="text-gray-600">Resultado natural e progressivo</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <button class="w-full border-2 border-primary text-primary font-medium py-3 rounded-lg hover:bg-primary hover:text-white schedule-btn" data-treatment="Toxina Botulínica" data-price="700">Agendar Este Tratamento</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-12 fade-in">
+                <a href="#agendamento" class="inline-flex items-center text-primary font-medium">
+                    <span>Ver todos os tratamentos disponíveis</span>
+                    <i class="fas fa-arrow-right ml-2"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Seção Equipe -->
+    <section id="equipe" class="py-20 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16 fade-in">
+                <h2 class="heading-font text-3xl md:text-4xl font-bold text-dark mb-4">Conheça Nossa <span class="gradient-text">Equipe</span></h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">Profissionais qualificados e apaixonados por transformar vidas através da estética e do bem-estar.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+                <!-- Profissional 1 -->
+                <div class="text-center fade-in">
+                    <div class="w-48 h-48 rounded-full overflow-hidden mx-auto mb-6 border-4 border-white shadow-lg">
+                        <img src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Dra. Marina Silva" class="w-full h-full object-cover">
+                    </div>
+                    <h3 class="text-xl font-bold text-dark mb-2">Dra. Marina Silva</h3>
+                    <p class="text-primary font-medium mb-4">Dermatologista - CRM 12345</p>
+                    <p class="text-gray-600">Especialista em dermatologia estética com mais de 15 anos de experiência. Membro da Sociedade Brasileira de Dermatologia.</p>
+                </div>
+                
+                <!-- Profissional 2 -->
+                <div class="text-center fade-in">
+                    <div class="w-48 h-48 rounded-full overflow-hidden mx-auto mb-6 border-4 border-white shadow-lg">
+                        <img src="https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Camila Oliveira" class="w-full h-full object-cover">
+                    </div>
+                    <h3 class="text-xl font-bold text-dark mb-2">Camila Oliveira</h3>
+                    <p class="text-primary font-medium mb-4">Esteticista Facial - CREFITO 67890</p>
+                    <p class="text-gray-600">Especialista em tratamentos faciais avançados, com formação internacional em peeling químico e lasers.</p>
+                </div>
+                
+                <!-- Profissional 3 -->
+                <div class="text-center fade-in">
+                    <div class="w-48 h-48 rounded-full overflow-hidden mx-auto mb-6 border-4 border-white shadow-lg">
+                        <img src="https://images.unsplash.com/photo-1594824434340-7e7dfc37cabb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Fernanda Costa" class="w-full h-full object-cover">
+                    </div>
+                    <h3 class="text-xl font-bold text-dark mb-2">Fernanda Costa</h3>
+                    <p class="text-primary font-medium mb-4">Especialista em Corporal - CREFITO 54321</p>
+                    <p class="text-gray-600">Especializada em tratamentos corporais, criolipólise e massoterapia. Atua na área há mais de 10 anos.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Seção Agendamento -->
+    <section id="agendamento" class="py-20 bg-gradient-to-br from-light to-white">
+        <div class="container mx-auto px-4">
+            <div class="max-w-6xl mx-auto">
+                <div class="text-center mb-16 fade-in">
+                    <h2 class="heading-font text-3xl md:text-4xl font-bold text-dark mb-4">Agende Sua <span class="gradient-text">Consulta</span></h2>
+                    <p class="text-gray-600 max-w-2xl mx-auto">Selecione o tratamento, data e horário preferenciais. Entraremos em contato para confirmar seu agendamento.</p>
+                </div>
+                
+                <div class="bg-white rounded-3xl shadow-xl overflow-hidden">
+                    <div class="grid grid-cols-1 lg:grid-cols-2">
+                        <!-- Calendário -->
+                        <div class="p-8 lg:p-12 border-r border-gray-100">
+                            <h3 class="text-2xl font-bold text-dark mb-8">Selecione a Data</h3>
+                            <div id="calendar" class="mb-10">
+                                <!-- Calendário será gerado via JavaScript -->
+                            </div>
+                            
+                            <div>
+                                <h4 class="text-xl font-bold text-dark mb-6">Horários Disponíveis</h4>
+                                <div id="time-slots" class="grid grid-cols-3 md:grid-cols-4 gap-3">
+                                    <!-- Horários serão gerados via JavaScript -->
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Formulário -->
+                        <div class="p-8 lg:p-12 appointment-form">
+                            <h3 class="text-2xl font-bold text-dark mb-8">Preencha Seus Dados</h3>
+                            
+                            <form id="appointment-form">
+                                <div class="mb-8">
+                                    <label class="block text-dark font-medium mb-4 text-lg">Tratamento Selecionado</label>
+                                    <div class="p-4 bg-gray-50 rounded-xl">
+                                        <div class="flex justify-between items-center">
+                                            <div>
+                                                <h4 id="selected-treatment" class="font-bold text-dark">Nenhum tratamento selecionado</h4>
+                                                <p id="selected-duration" class="text-gray-500 text-sm"></p>
+                                            </div>
+                                            <div>
+                                                <span id="selected-price" class="text-2xl font-bold text-primary">-</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="mb-8">
+                                    <label class="block text-dark font-medium mb-4 text-lg">Data e Horário</label>
+                                    <div class="p-4 bg-gray-50 rounded-xl">
+                                        <div class="flex justify-between items-center">
+                                            <div>
+                                                <h4 id="selected-date" class="font-bold text-dark">Data não selecionada</h4>
+                                                <p id="selected-time" class="text-gray-500">Horário não selecionado</p>
+                                            </div>
+                                            <div>
+                                                <button type="button" id="change-selection" class="text-primary font-medium">Alterar</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="space-y-6">
+                                    <div>
+                                        <label for="name" class="block text-dark font-medium mb-2">Nome Completo *</label>
+                                        <input type="text" id="name" class="w-full py-3 focus:outline-none" placeholder="Seu nome completo" required>
+                                    </div>
+                                    
+                                    <div>
+                                        <label for="phone" class="block text-dark font-medium mb-2">Telefone *</label>
+                                        <input type="tel" id="phone" class="w-full py-3 focus:outline-none" placeholder="(11) 99999-9999" required>
+                                    </div>
+                                    
+                                    <div>
+                                        <label for="email" class="block text-dark font-medium mb-2">E-mail *</label>
+                                        <input type="email" id="email" class="w-full py-3 focus:outline-none" placeholder="seuemail@exemplo.com" required>
+                                    </div>
+                                    
+                                    <div>
+                                        <label for="notes" class="block text-dark font-medium mb-2">Observações (Opcional)</label>
+                                        <textarea id="notes" rows="3" class="w-full py-3 focus:outline-none" placeholder="Alguma observação importante sobre o tratamento..."></textarea>
+                                    </div>
+                                    
+                                    <button type="submit" class="w-full bg-gradient-to-r from-primary to-secondary text-white font-medium py-4 rounded-full shadow-lg hover:shadow-xl transform hover:-translate-y-1 mt-8">Confirmar Agendamento</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Seção Contato -->
+    <section id="contato" class="py-20 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="max-w-6xl mx-auto">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                    <!-- Informações -->
+                    <div class="fade-in">
+                        <h2 class="heading-font text-3xl md:text-4xl font-bold text-dark mb-8">Entre em <span class="gradient-text">Contato</span></h2>
+                        
+                        <div class="space-y-8">
+                            <div class="flex items-start">
+                                <div class="w-12 h-12 bg-primary bg-opacity-10 rounded-full flex items-center justify-center mr-5">
+                                    <i class="fas fa-map-marker-alt text-primary text-xl"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-xl font-bold text-dark mb-2">Endereço</h4>
+                                    <p class="text-gray-600">Av. Paulista, 1234 - Jardins<br>São Paulo, SP - 01310-100</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start">
+                                <div class="w-12 h-12 bg-primary bg-opacity-10 rounded-full flex items-center justify-center mr-5">
+                                    <i class="fas fa-phone-alt text-primary text-xl"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-xl font-bold text-dark mb-2">Telefone</h4>
+                                    <p class="text-gray-600">(11) 3456-7890</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start">
+                                <div class="w-12 h-12 bg-primary bg-opacity-10 rounded-full flex items-center justify-center mr-5">
+                                    <i class="fas fa-envelope text-primary text-xl"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-xl font-bold text-dark mb-2">E-mail</h4>
+                                    <p class="text-gray-600">contato@clinicaserenidade.com.br</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start">
+                                <div class="w-12 h-12 bg-primary bg-opacity-10 rounded-full flex items-center justify-center mr-5">
+                                    <i class="fas fa-clock text-primary text-xl"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-xl font-bold text-dark mb-2">Horário de Funcionamento</h4>
+                                    <p class="text-gray-600">Segunda a Sexta: 8h às 20h<br>Sábado: 8h às 14h<br>Domingo: Fechado</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-12">
+                            <h4 class="text-xl font-bold text-dark mb-6">Siga-nos nas Redes Sociais</h4>
+                            <div class="flex space-x-4">
+                                <a href="#" class="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center hover:bg-primary hover:text-white">
+                                    <i class="fab fa-instagram text-xl"></i>
+                                </a>
+                                <a href="#" class="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center hover:bg-primary hover:text-white">
+                                    <i class="fab fa-facebook-f text-xl"></i>
+                                </a>
+                                <a href="#" class="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center hover:bg-primary hover:text-white">
+                                    <i class="fab fa-tiktok text-xl"></i>
+                                </a>
+                                <a href="#" class="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center hover:bg-primary hover:text-white">
+                                    <i class="fab fa-youtube text-xl"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Mapa -->
+                    <div class="fade-in">
+                        <div class="rounded-2xl overflow-hidden shadow-xl h-full">
+                            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3657.197575207318!2d-46.65867592468277!3d-23.56136956184345!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94ce59c8da0aa315%3A0xd59f9431f2c9776a!2sAv.%20Paulista%2C%20S%C3%A3o%20Paulo%20-%20SP!5e0!3m2!1spt-BR!2sbr!4v1686764500097!5m2!1spt-BR!2sbr" width="100%" height="100%" style="border:0; min-height: 500px;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-8 md:mb-0">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 bg-gradient-to-r from-primary to-secondary rounded-full flex items-center justify-center mr-3">
+                            <i class="fas fa-spa text-white"></i>
+                        </div>
+                        <div>
+                            <h2 class="heading-font text-2xl font-bold">Serenidade</h2>
+                            <p class="text-xs text-gray-300">Clínica de Estética</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-400 max-w-md">Cuidando da sua beleza com técnicas avançadas em um ambiente sereno e acolhedor.</p>
+                </div>
+                
+                <div class="text-center md:text-right">
+                    <p class="text-gray-400 mb-2">© 2023 Clínica Serenidade. Todos os direitos reservados.</p>
+                    <p class="text-gray-500 text-sm">CNPJ: 12.345.678/0001-90</p>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 mt-10 pt-8 text-center">
+                <p class="text-gray-500 text-sm">Desenvolvido com <i class="fas fa-heart text-red-400"></i> para proporcionar bem-estar e confiança</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modal de Confirmação -->
+    <div id="confirmation-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-md w-full p-8 transform transition-all scale-95 opacity-0" id="modal-content">
+            <div class="text-center mb-8">
+                <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <i class="fas fa-check text-green-500 text-3xl"></i>
+                </div>
+                <h3 class="text-2xl font-bold text-dark mb-4">Agendamento Confirmado!</h3>
+                <p class="text-gray-600 mb-6">Seu agendamento foi recebido com sucesso. Entraremos em contato em até 24h para confirmar os detalhes.</p>
+                
+                <div class="bg-gray-50 rounded-xl p-6 mb-8 text-left">
+                    <h4 class="font-bold text-dark mb-4">Resumo do Agendamento:</h4>
+                    <div class="space-y-3">
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Tratamento:</span>
+                            <span class="font-medium" id="modal-treatment">-</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Data:</span>
+                            <span class="font-medium" id="modal-date">-</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Horário:</span>
+                            <span class="font-medium" id="modal-time">-</span>
+                        </div>
+                        <div class="flex justify-between border-t pt-3 mt-3">
+                            <span class="text-gray-600">Valor:</span>
+                            <span class="font-bold text-primary" id="modal-price">-</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <button id="close-modal" class="w-full bg-gradient-to-r from-primary to-secondary text-white font-medium py-4 rounded-full shadow-lg">Fechar</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Variáveis globais para o agendamento
+        let selectedTreatment = '';
+        let selectedTreatmentPrice = '';
+        let selectedDate = '';
+        let selectedTime = '';
+        
+        // Inicialização quando o DOM estiver carregado
+        document.addEventListener('DOMContentLoaded', function() {
+            // Menu mobile
+            const menuToggle = document.getElementById('menu-toggle');
+            const menuClose = document.getElementById('menu-close');
+            const mobileMenu = document.getElementById('mobile-menu');
+            
+            menuToggle.addEventListener('click', function() {
+                mobileMenu.classList.add('open');
+                document.body.style.overflow = 'hidden';
+            });
+            
+            menuClose.addEventListener('click', function() {
+                mobileMenu.classList.remove('open');
+                document.body.style.overflow = 'auto';
+            });
+            
+            // Fechar menu ao clicar em um link
+            const mobileLinks = document.querySelectorAll('#mobile-menu a');
+            mobileLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    mobileMenu.classList.remove('open');
+                    document.body.style.overflow = 'auto';
+                });
+            });
+            
+            // Botões de agendamento nos tratamentos
+            const scheduleBtns = document.querySelectorAll('.schedule-btn');
+            scheduleBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    selectedTreatment = this.getAttribute('data-treatment');
+                    selectedTreatmentPrice = this.getAttribute('data-price');
+                    
+                    // Atualizar o formulário
+                    document.getElementById('selected-treatment').textContent = selectedTreatment;
+                    document.getElementById('selected-price').textContent = `R$ ${selectedTreatmentPrice}`;
+                    
+                    // Rolar para a seção de agendamento
+                    document.getElementById('agendamento').scrollIntoView({ behavior: 'smooth' });
+                    
+                    // Animar o formulário
+                    const formSection = document.querySelector('.appointment-form');
+                    formSection.classList.add('animate__animated', 'animate__pulse');
+                    setTimeout(() => {
+                        formSection.classList.remove('animate__animated', 'animate__pulse');
+                    }, 1000);
+                });
+            });
+            
+            // Inicializar calendário
+            initCalendar();
+            
+            // Inicializar horários
+            initTimeSlots();
+            
+            // Botão para alterar seleção de data/horário
+            document.getElementById('change-selection').addEventListener('click', function() {
+                selectedDate = '';
+                selectedTime = '';
+                updateDateTimeDisplay();
+                
+                // Animar o calendário
+                const calendar = document.getElementById('calendar');
+                calendar.classList.add('animate__animated', 'animate__shakeX');
+                setTimeout(() => {
+                    calendar.classList.remove('animate__animated', 'animate__shakeX');
+                }, 1000);
+            });
+            
+            // Formulário de agendamento
+            document.getElementById('appointment-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Validar campos
+                const name = document.getElementById('name').value;
+                const phone = document.getElementById('phone').value;
+                const email = document.getElementById('email').value;
+                
+                if (!name || !phone || !email) {
+                    alert('Por favor, preencha todos os campos obrigatórios.');
+                    return;
+                }
+                
+                if (!selectedTreatment) {
+                    alert('Por favor, selecione um tratamento.');
+                    return;
+                }
+                
+                if (!selectedDate || !selectedTime) {
+                    alert('Por favor, selecione uma data e horário.');
+                    return;
+                }
+                
+                // Atualizar modal de confirmação
+                document.getElementById('modal-treatment').textContent = selectedTreatment;
+                document.getElementById('modal-date').textContent = selectedDate;
+                document.getElementById('modal-time').textContent = selectedTime;
+                document.getElementById('modal-price').textContent = `R$ ${selectedTreatmentPrice}`;
+                
+                // Mostrar modal
+                const modal = document.getElementById('confirmation-modal');
+                const modalContent = document.getElementById('modal-content');
+                modal.classList.remove('hidden');
+                
+                // Animar entrada do modal
+                setTimeout(() => {
+                    modalContent.classList.remove('scale-95', 'opacity-0');
+                    modalContent.classList.add('scale-100', 'opacity-100');
+                }, 10);
+                
+                // Fechar modal
+                document.getElementById('close-modal').addEventListener('click', function() {
+                    modalContent.classList.remove('scale-100', 'opacity-100');
+                    modalContent.classList.add('scale-95', 'opacity-0');
+                    
+                    setTimeout(() => {
+                        modal.classList.add('hidden');
+                        // Resetar formulário
+                        document.getElementById('appointment-form').reset();
+                        selectedTreatment = '';
+                        selectedTreatmentPrice = '';
+                        selectedDate = '';
+                        selectedTime = '';
+                        updateDateTimeDisplay();
+                        document.getElementById('selected-treatment').textContent = 'Nenhum tratamento selecionado';
+                        document.getElementById('selected-price').textContent = '-';
+                        
+                        // Resetar seleções no calendário
+                        resetCalendarSelection();
+                        resetTimeSlots();
+                    }, 300);
+                });
+            });
+            
+            // Máscara para telefone
+            const phoneInput = document.getElementById('phone');
+            phoneInput.addEventListener('input', function(e) {
+                let value = e.target.value.replace(/\D/g, '');
+                
+                if (value.length > 11) {
+                    value = value.substring(0, 11);
+                }
+                
+                if (value.length > 10) {
+                    value = value.replace(/^(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
+                } else if (value.length > 6) {
+                    value = value.replace(/^(\d{2})(\d{4})(\d{0,4})/, '($1) $2-$3');
+                } else if (value.length > 2) {
+                    value = value.replace(/^(\d{2})(\d{0,5})/, '($1) $2');
+                } else if (value.length > 0) {
+                    value = value.replace(/^(\d*)/, '($1');
+                }
+                
+                e.target.value = value;
+            });
+            
+            // Animação de fade-in ao rolar
+            initScrollAnimations();
+            
+            // Barra de progresso de rolagem
+            initScrollProgress();
+        });
+        
+        // Funções de inicialização
+        function initCalendar() {
+            const calendarEl = document.getElementById('calendar');
+            const today = new Date();
+            const monthNames = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
+            const dayNames = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
+            
+            // Criar cabeçalho do calendário
+            let calendarHTML = `
+                <div class="flex justify-between items-center mb-8">
+                    <button id="prev-month" class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center hover:bg-primary hover:text-white">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <h4 class="text-xl font-bold text-dark" id="current-month">${monthNames[today.getMonth()]} ${today.getFullYear()}</h4>
+                    <button id="next-month" class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center hover:bg-primary hover:text-white">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+                <div class="grid grid-cols-7 gap-2 mb-4">
+            `;
+            
+            // Adicionar dias da semana
+            dayNames.forEach(day => {
+                calendarHTML += `<div class="text-center font-bold text-gray-500 py-2">${day}</div>`;
+            });
+            
+            calendarHTML += `</div><div class="grid grid-cols-7 gap-2" id="calendar-days"></div>`;
+            calendarEl.innerHTML = calendarHTML;
+            
+            // Renderizar dias do mês atual
+            renderCalendarDays(today.getFullYear(), today.getMonth());
+            
+            // Adicionar eventos aos botões de navegação
+            document.getElementById('prev-month').addEventListener('click', function() {
+                const currentMonthEl = document.getElementById('current-month');
+                const [monthName, year] = currentMonthEl.textContent.split(' ');
+                const monthIndex = monthNames.indexOf(monthName);
+                let newMonth = monthIndex - 1;
+                let newYear = parseInt(year);
+                
+                if (newMonth < 0) {
+                    newMonth = 11;
+                    newYear--;
+                }
+                
+                currentMonthEl.textContent = `${monthNames[newMonth]} ${newYear}`;
+                renderCalendarDays(newYear, newMonth);
+            });
+            
+            document.getElementById('next-month').addEventListener('click', function() {
+                const currentMonthEl = document.getElementById('current-month');
+                const [monthName, year] = currentMonthEl.textContent.split(' ');
+                const monthIndex = monthNames.indexOf(monthName);
+                let newMonth = monthIndex + 1;
+                let newYear = parseInt(year);
+                
+                if (newMonth > 11) {
+                    newMonth = 0;
+                    newYear++;
+                }
+                
+                currentMonthEl.textContent = `${monthNames[newMonth]} ${newYear}`;
+                renderCalendarDays(newYear, newMonth);
+            });
+        }
+        
+        function renderCalendarDays(year, month) {
+            const calendarDaysEl = document.getElementById('calendar-days');
+            const firstDay = new Date(year, month, 1);
+            const lastDay = new Date(year, month + 1, 0);
+            const daysInMonth = lastDay.getDate();
+            const firstDayIndex = firstDay.getDay();
+            
+            let calendarHTML = '';
+            
+            // Dias vazios antes do primeiro dia do mês
+            for (let i = 0; i < firstDayIndex; i++) {
+                calendarHTML += `<div class="calendar-day disabled"></div>`;
+            }
+            
+            // Dias do mês
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            
+            for (let day = 1; day <= daysInMonth; day++) {
+                const currentDate = new Date(year, month, day);
+                const isToday = currentDate.getTime() === today.getTime();
+                const isPast = currentDate < today;
+                const isSelected = selectedDate === `${day}/${month + 1}/${year}`;
+                const dayClass = isPast ? 'disabled' : isSelected ? 'selected' : '';
+                
+                calendarHTML += `
+                    <div class="calendar-day ${dayClass} ${isToday ? 'font-bold border-2 border-primary' : ''}" 
+                         data-day="${day}" 
+                         data-month="${month + 1}" 
+                         data-year="${year}"
+                         ${isPast ? '' : 'data-selectable="true"'}>
+                        ${day}
+                    </div>
+                `;
+            }
+            
+            calendarDaysEl.innerHTML = calendarHTML;
+            
+            // Adicionar eventos de clique aos dias selecionáveis
+            document.querySelectorAll('.calendar-day[data-selectable="true"]').forEach(dayEl => {
+                dayEl.addEventListener('click', function() {
+                    // Remover seleção anterior
+                    document.querySelectorAll('.calendar-day.selected').forEach(el => {
+                        el.classList.remove('selected');
+                    });
+                    
+                    // Adicionar seleção atual
+                    this.classList.add('selected');
+                    
+                    // Atualizar data selecionada
+                    const day = this.getAttribute('data-day');
+                    const month = this.getAttribute('data-month');
+                    const year = this.getAttribute('data-year');
+                    selectedDate = `${day}/${month}/${year}`;
+                    
+                    // Atualizar exibição
+                    updateDateTimeDisplay();
+                    
+                    // Atualizar horários disponíveis
+                    updateTimeSlots();
+                });
+            });
+        }
+        
+        function initTimeSlots() {
+            const timeSlotsEl = document.getElementById('time-slots');
+            const timeSlots = [
+                '08:00', '09:00', '10:00', '11:00', 
+                '13:00', '14:00', '15:00', '16:00', 
+                '17:00', '18:00', '19:00'
+            ];
+            
+            let timeSlotsHTML = '';
+            
+            // Horários já agendados (simulação)
+            const bookedSlots = ['10:00', '14:00', '16:00'];
+            
+            timeSlots.forEach(slot => {
+                const isBooked = bookedSlots.includes(slot);
+                const isSelected = selectedTime === slot;
+                const slotClass = isBooked ? 'booked' : isSelected ? 'selected' : '';
+                
+                timeSlotsHTML += `
+                    <div class="time-slot ${slotClass}" 
+                         data-time="${slot}"
+                         ${isBooked ? '' : 'data-selectable="true"'}>
+                        ${slot}
+                    </div>
+                `;
+            });
+            
+            timeSlotsEl.innerHTML = timeSlotsHTML;
+            
+            // Adicionar eventos de clique aos horários selecionáveis
+            document.querySelectorAll('.time-slot[data-selectable="true"]').forEach(slotEl => {
+                slotEl.addEventListener('click', function() {
+                    // Remover seleção anterior
+                    document.querySelectorAll('.time-slot.selected').forEach(el => {
+                        el.classList.remove('selected');
+                    });
+                    
+                    // Adicionar seleção atual
+                    this.classList.add('selected');
+                    
+                    // Atualizar horário selecionado
+                    selectedTime = this.getAttribute('data-time');
+                    
+                    // Atualizar exibição
+                    updateDateTimeDisplay();
+                });
+            });
+        }
+        
+        function updateTimeSlots() {
+            // Simulação: alguns horários ficam indisponíveis dependendo do dia
+            const timeSlotsEl = document.getElementById('time-slots');
+            const timeSlots = document.querySelectorAll('.time-slot');
+            
+            // Resetar todos os horários
+            timeSlots.forEach(slot => {
+                slot.classList.remove('booked', 'selected');
+                
+                // Simulação: marcar alguns horários como ocupados
+                if (Math.random() > 0.7) {
+                    slot.classList.add('booked');
+                    slot.removeAttribute('data-selectable');
+                } else {
+                    slot.setAttribute('data-selectable', 'true');
+                }
+            });
+            
+            // Resetar seleção de horário
+            selectedTime = '';
+            
+            // Atualizar eventos de clique
+            document.querySelectorAll('.time-slot[data-selectable="true"]').forEach(slotEl => {
+                slotEl.addEventListener('click', function() {
+                    // Remover seleção anterior
+                    document.querySelectorAll('.time-slot.selected').forEach(el => {
+                        el.classList.remove('selected');
+                    });
+                    
+                    // Adicionar seleção atual
+                    this.classList.add('selected');
+                    
+                    // Atualizar horário selecionado
+                    selectedTime = this.getAttribute('data-time');
+                    
+                    // Atualizar exibição
+                    updateDateTimeDisplay();
+                });
+            });
+        }
+        
+        function updateDateTimeDisplay() {
+            const dateEl = document.getElementById('selected-date');
+            const timeEl = document.getElementById('selected-time');
+            
+            if (selectedDate) {
+                dateEl.textContent = selectedDate;
+            } else {
+                dateEl.textContent = 'Data não selecionada';
+            }
+            
+            if (selectedTime) {
+                timeEl.textContent = selectedTime;
+            } else {
+                timeEl.textContent = 'Horário não selecionado';
+            }
+        }
+        
+        function resetCalendarSelection() {
+            document.querySelectorAll('.calendar-day.selected').forEach(el => {
+                el.classList.remove('selected');
+            });
+        }
+        
+        function resetTimeSlots() {
+            document.querySelectorAll('.time-slot.selected').forEach(el => {
+                el.classList.remove('selected');
+            });
+        }
+        
+        function initScrollAnimations() {
+            const fadeElements = document.querySelectorAll('.fade-in');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            });
+            
+            fadeElements.forEach(element => {
+                observer.observe(element);
+            });
+        }
+        
+        function initScrollProgress() {
+            const scrollProgress = document.getElementById('scroll-progress');
+            
+            window.addEventListener('scroll', function() {
+                const windowHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                const scrolled = (window.scrollY / windowHeight) * 100;
+                scrollProgress.style.width = scrolled + '%';
+            });
+        }
+    </script>
+</body>
+</html>
